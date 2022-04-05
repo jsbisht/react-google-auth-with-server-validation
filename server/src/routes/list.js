@@ -3,7 +3,7 @@ import list from '../mock/list'
 
 const router = express.Router()
 
-router.get('/', async (req, res) => {
+router.get('/', (req, res) => {
   res.json(list)
 })
 

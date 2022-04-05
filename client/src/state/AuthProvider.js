@@ -2,17 +2,17 @@ import { useState } from 'react'
 import { AuthContext } from './AuthContext'
 
 export const AuthProvider = ({ children }) => {
-  let [user, setUser] = useState(null)
+  let [authData, setAuthData] = useState(null)
 
-  let onSignIn = (newUser) => {
-    setUser(newUser)
+  let onSignIn = (data) => {
+    setAuthData(data)
   }
 
   let onSignOut = () => {
-    setUser(null)
+    setAuthData(null)
   }
 
-  let value = { user, onSignIn, onSignOut }
+  let value = { authData, onSignIn, onSignOut }
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
 }

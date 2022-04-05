@@ -1,25 +1,25 @@
-const clientId =
-  '707788443358-u05p46nssla3l8tmn58tpo9r5sommgks.apps.googleusercontent.com' ||
-  process.env.GOOGLE_CLIENT_ID
+import axios from 'axios'
 
+const clientId =
+  '707788443358-u05p46nssla3l8tmn58tpo9r5sommgks.apps.googleusercontent.com'
 /**
  * @returns Boolean true if user is logged in and userId matches
  */
 export async function googleAuthValidate(req) {
-  const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID)
-  if (!req.headers?.authorization?.startsWith('Bearer ')) {
-    //throw new AuthenticationError('you must be logged in');
+  const idToken = req.headers?.authorization
+  if (!idToken) {
     return false
+  } else {
+    try {
+      const url = `https://oauth2.googleapis.com/tokeninfo?id_token=${idToken}`
+      const { data } = await axios.get(url)
+      const { aud } = data
+      return aud === clientId
+    } catch (error) {
+      console.error('Could not validate idToken')
+      console.error(error)
+    }
   }
-  const idToken = req.headers.authorization.split('Bearer ')[1]
-  const ticket = await client.verifyIdToken({
-    idToken,
-    audience: clientId
-  })
 
-  const payload = ticket.getPayload()
-  const userId = payload.sub
-  const requestUserId = req.params?.userId
-
-  return userId === requestUserId
+  return false
 }

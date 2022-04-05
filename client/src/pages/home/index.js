@@ -1,17 +1,29 @@
 import React, { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { useAuth } from '../../state/AuthContext'
 
 import { callListApi } from '../../utility/api'
 import { PATH_LIST } from '../../utility/constants/path'
 
 export default function HomePage() {
+  const { authData } = useAuth()
+  const navigate = useNavigate()
   const [list, setList] = useState([])
 
   useEffect(() => {
     const getData = async () => {
-      const { data } = await callListApi({
-        path: PATH_LIST
+      const { tokenId } = authData
+      const { err, data } = await callListApi({
+        path: PATH_LIST,
+        headers: {
+          authorization: tokenId
+        }
       })
-      setList(data)
+      if (err) {
+        navigate('/', { replace: true })
+      } else {
+        setList(data)
+      }
     }
     getData()
   }, [])

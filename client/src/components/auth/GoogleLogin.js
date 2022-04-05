@@ -15,17 +15,17 @@ export default function GoogleLogin() {
   const navigate = useNavigate()
 
   const onSuccess = async (res) => {
-    const { accessToken, googleId } = res
-    const { err, msg, data } = await callListApi({
-      path: `${PATH_AUTH}/${googleId}`,
+    const { tokenId } = res
+    const { err, data } = await callListApi({
+      path: PATH_AUTH,
       headers: {
-        Authorization: `Bearer ${accessToken}`
+        authorization: tokenId
       }
     })
     if (err) {
-      console.log(msg)
+      navigate('/', { replace: true })
     }
-    onSignIn(data)
+    onSignIn(res)
     navigate('/home', { replace: true })
     refreshTokenSetup(res)
   }
