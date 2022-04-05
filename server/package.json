@@ -1,0 +1,46 @@
+{
+  "name": "express-es6-sample",
+  "version": "0.0.1",
+  "private": true,
+  "license": "MIT",
+  "dependencies": {
+    "cookie-parser": "~1.4.4",
+    "cors": "^2.8.5",
+    "debug": "~2.6.9",
+    "express": "^4.17.1",
+    "mongodb": "^4.4.1",
+    "morgan": "~1.9.1",
+    "nodemon": "^2.0.2",
+    "typescript": "^4.3.5"
+  },
+  "devDependencies": {
+    "jest": "^25.1.0",
+    "tsc-watch": "^4.4.0"
+  },
+  "nodemonConfig": {
+    "exec": "npm run dev",
+    "watch": [
+      "src/*",
+      "public/*"
+    ],
+    "ignore": [
+      "**/__tests__/**",
+      "*.test.js",
+      "*.spec.js"
+    ]
+  },
+  "jest": {
+    "testEnvironment": "node"
+  },
+  "main": "dist/index.js",
+  "source": "dist",
+  "scripts": {
+    "build": "tsc",
+    "clean": "rm -rf dist",
+    "serve": "node ./dist/",
+    "dev": "NODE_ENV=development tsc-watch --noClear --onSuccess 'npm run serve'",
+    "prod": "NODE_ENV=production npm run server",
+    "watch:dev": "nodemon",
+    "test": "jest"
+  }
+}
